@@ -2,32 +2,34 @@
 
 # Book Store Inventory System Setup Script
 
-# Description:
-# Book Store is a simple, yet effective, book inventory management system designed to help manage books in a bookstore.
-# It allows for easy tracking of book details, inventory status, and other relevant information.
-# This system leverages modern web technologies to provide a user-friendly and efficient solution for bookstore management.
+## Description:
+### Book Store is a simple, yet effective, book inventory management system designed to help manage books in a bookstore.
+### It allows for easy tracking of book details, inventory status, and other relevant information.
+### This system leverages modern web technologies to provide a user-friendly and efficient solution for bookstore management.
 
-# Features:
-# - Book Management: Add, update, and delete book records.
-# - Inventory Tracking: Monitor the stock levels of books.
-# - Search Functionality: Easily search for books by title, author, or ISBN.
-# - User Interface: A clean and intuitive user interface using TailWindCSS and FlowBite components.
-# - Real-time Interactions: Dynamic interactions powered by AlpineJS.
+## Features:
+### - Book Management: Add, update, and delete book records.
+### - Inventory Tracking: Monitor the stock levels of books.
+### - Search Functionality: Easily search for books by title, author, or ISBN.
+### - User Interface: A clean and intuitive user interface using TailWindCSS and FlowBite components.
+### - Real-time Interactions: Dynamic interactions powered by AlpineJS.
 
-# Requirements:
-# - PHP ^7.4
-# - MySQLi
-# - TailWindCSS ^3.0
-# - FlowBite
-# - AlpineJS
+## Requirements:
+### - PHP ^7.4
+### - MySQLi
+### - TailWindCSS ^3.0
+### - FlowBite
+### - AlpineJS
 
-# Step 1: Clone the Repository
+## Step 1: Clone the Repository
 
 ```bash
 
 echo "Step 1: Cloning the repository..."
 git clone https://github.com/yourusername/bookstore.git
 cd bookstore || { echo "Failed to change directory to 'bookstore'"; exit 1; }
+
+```
 
 # Step 2: Install Dependencies (if any)
 # Since this project primarily uses PHP and MySQLi, we'll ensure PHP is installed
