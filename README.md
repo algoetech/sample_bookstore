@@ -1,7 +1,4 @@
-Sure, here's the content of the README written in script format as comments within a shell script:
 
-```bash
-#!/bin/bash
 
 # Book Store Inventory System Setup Script
 
@@ -25,6 +22,9 @@ Sure, here's the content of the README written in script format as comments with
 # - AlpineJS
 
 # Step 1: Clone the Repository
+
+```bash
+
 echo "Step 1: Cloning the repository..."
 git clone https://github.com/yourusername/bookstore.git
 cd bookstore || { echo "Failed to change directory to 'bookstore'"; exit 1; }
