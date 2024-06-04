@@ -1,6 +1,6 @@
 
 
-# Book Store Inventory System Setup Script
+# Book Store Inventory System
 
 ## Description:
  Book Store is a simple, yet effective, book inventory management system designed to help manage books in a bookstore.
@@ -91,4 +91,3 @@ php -S localhost:8000
 
 ## License:
      This project is licensed under the MIT License. See the LICENSE file for more information.
-
