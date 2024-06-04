@@ -26,7 +26,7 @@
 ```bash
 
 echo "Step 1: Cloning the repository..."
-git clone https://github.com/yourusername/bookstore.git
+git clone https://github.com/algoetech/bookstore.git
 cd bookstore || { echo "Failed to change directory to 'bookstore'"; exit 1; }
 
 ```
