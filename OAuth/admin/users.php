@@ -1,4 +1,28 @@
-<?php include '../inc/header.php'; ?>
+<?php include('../../lib/db.php'); ?>
+<?php include('../inc/header.php'); ?>
+
+
+<?php
+
+if (isset($_POST['save'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $role = $_POST['role'];
+    $password = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+
+   try {
+        $insert = $conn->prepare("INSERT INTO users (username, email, password, role_id) VALUES ('$name', '$email', '$password', '$role');");
+        // $insert->bind_param('sssi', $name, $email, $password, $role);
+        $insert->execute();
+        $response = 'User created successfully!';
+   } catch (\mysqli_sql_exception $e) {
+        $response = 'Error creating user: ' . $e->getMessage();
+    } catch (\Exception $e) {
+        $response = 'General error: ' . $e->getMessage();
+    }  
+}
+
+?>
 
 <?php if (isAdmin()) { ?>
 <?php 
@@ -15,8 +39,6 @@
 
     // Execute the query
     $result = $conn->query($sql);    
-    
-    
     
     
 ?>
@@ -174,6 +196,13 @@
                                 <div class="inline-block w-full align-middle">
                                     <div class="overflow-hidden shadow px-4">
 
+                                        <div>
+
+                                            <?php if (isset($response)) {
+                                                echo $response;
+                                            } ?>
+
+                                        </div>
 
                                         <?php if ($result->num_rows > 0) { ?>
 
@@ -238,8 +267,11 @@
                                                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
                                                                     clip-rule="evenodd"></path>
                                                             </svg>
-                                                            Edit user
+                                                            Edit
                                                         </button>
+                                                        <?php if ($row['role'] != $_SESSION['user_role']) { ?>
+
+
                                                         <button type="button" data-modal-toggle="delete-user-modal"
                                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center  bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                                             <svg class="w-4 h-4 mr-2" fill="currentColor"
@@ -248,8 +280,9 @@
                                                                     d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                                     clip-rule="evenodd"></path>
                                                             </svg>
-                                                            Delete user
+                                                            Delete
                                                         </button>
+                                                        <?php  } ?>
                                                     </td>
                                                 </tr>
                                                 <?php } ?>
@@ -265,9 +298,9 @@
                                                 <label for="first-name"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User
                                                     Name</label>
-                                                <input type="text" name="title" id="name"
+                                                <input type="text" name="name" id="name"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="Joseph Thomas" required="">
+                                                    placeholder="Joseph Diud" required="">
                                             </div>
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="first-name"
@@ -291,7 +324,7 @@
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="first-name"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                                                <select name="category" id="author"
+                                                <select name="role" id="author"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Science" required="">
                                                     <option value="">----</option>

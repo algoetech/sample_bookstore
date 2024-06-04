@@ -22,7 +22,7 @@
 <?php
 session_start();
 
-include '../../lib/db.php';
+// useCodeFrom('lib/db.php');
 
 secure();
 

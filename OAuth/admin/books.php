@@ -1,4 +1,5 @@
-<?php include '../inc/header.php';?>
+<?php include '../../lib/db.php'; ?>
+<?php include '../inc/header.php'; ?>
 
 <?php if (isAdmin()) { ?>
 
@@ -9,7 +10,7 @@
         $title = $conn->real_escape_string($_POST['title']);
         $isbn = $conn->real_escape_string($_POST['isbn']);
         $author_id = $conn->real_escape_string($_POST['author']);
-        $date = $conn->real_escape_string($_POST['date']);
+        $date = $_POST['date'];
         $category_id = $conn->real_escape_string($_POST['category']);
 
         // File upload handling
@@ -22,7 +23,7 @@
             if (move_uploaded_file($file_tmp, $file_path)) {
                 $pdf_path = $conn->real_escape_string($file_path);
 
-                $sql = "INSERT INTO books (title, isbn, file, publish_date, author_id, book_category_id) VALUES ('$title', '$isbn', '$pdf_path', $date, '$author_id', '$category_id')";
+                $sql = "INSERT INTO books (title, isbn, file, publish_date, author_id, book_category_id) VALUES ('$title', '$isbn', '$pdf_path', '$date', '$author_id', '$category_id')";
 
                 if ($conn->query($sql) === TRUE) {
                     $response = "<p>Book added successfully!</p>";

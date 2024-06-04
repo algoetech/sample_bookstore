@@ -26,4 +26,16 @@ function isAdmin(){
 }
 
 
+function useCodeFrom($filePath) {
+    $filePath = __DIR__ . '/' . ltrim($filePath, '/');
+
+    if (file_exists($filePath)) {
+        require($filePath);
+        return true;
+    } else {
+        trigger_error("The file '$filePath' does not exist.", E_USER_ERROR);
+        return false;
+    }
+  }
+
 ?>

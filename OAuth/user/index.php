@@ -1,4 +1,5 @@
-<?php include '../inc/header.php'; ?>
+<?php include('../../lib/db.php'); ?>
+<?php include('../inc/header.php'); ?>
 
 <body
     class="relative p-0 m-0 font-sans antialiased font-normal poppin sm:relative sm:overflow-x-hidden text-size-base leading-default dark:bg-vendor-secondary-beta bg-vendor-primary text-slate-500">
