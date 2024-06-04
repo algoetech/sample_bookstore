@@ -1,18 +1,17 @@
 <?php include('../../lib/db.php'); ?>
 <?php include('../inc/header.php'); ?>
 
-<?php if (isAdmin()) { ?>
+<?php if (!isAdmin()) { ?>
 <?php 
+$uid = $_SESSION['user_id'];
     
     $sql = "SELECT 
-        users.id, 
-        users.username, 
-        users.email,
-        users.password, 
-        users.role_id, 
-        roles.name as role
-    FROM users 
-    JOIN roles ON users.role_id = roles.id where 1";
+        requests.id, 
+        requests.bookname, 
+        requests.author, 
+        users.username as user
+    FROM requests 
+    JOIN users ON requests.user = users.id where requests.user = '$uid'";
 
     // Execute the query
     $result = $conn->query($sql);    
@@ -72,7 +71,8 @@
 
                                 </ol>
                             </nav>
-                            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Users</h1>
+                            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Books Request
+                            </h1>
                         </div>
                         <!-- Right Content -->
 
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center ml-auto space-x-2 sm:space-x-3">
-                                <button type="button" id="toggleButton" data-model="User"
+                                <button type="button" id="toggleButton" data-model="Request"
                                     class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg hover:bg-gradient-to-tl hover:from-vendor-secondary-beta bg-gradient-cyan hover:via-vendor-secondary-alpha hover:to-vendor-tertiary-beta focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                     <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -148,7 +148,7 @@
                                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    Add User
+                                    Add Request
                                 </button>
 
                             </div>
@@ -189,11 +189,11 @@
 
                                                 <th scope="col"
                                                     class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                    Name & email
+                                                    Book Name
                                                 </th>
                                                 <th scope="col"
                                                     class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                    role
+                                                    Author
                                                 </th>
 
                                                 <th scope="col"
@@ -209,23 +209,13 @@
                                                     <td
                                                         class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                         <?php echo $count; ?></td>
-                                                    <td class="flex items-center p-4 mr-12 space-x-6 whitespace-nowrap">
-
-                                                        <div
-                                                            class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                            <div
-                                                                class="text-base font-semibold text-gray-900 dark:text-white">
-                                                                <?php echo $row['username']; ?></div>
-                                                            <div
-                                                                class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                                                                <?php echo $row['email']; ?></div>
-                                                        </div>
-                                                    </td>
-
 
                                                     <td
                                                         class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <?php echo $row['role']; ?></td>
+                                                        <?php echo $row['bookname']; ?></td>
+                                                    <td
+                                                        class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <?php echo $row['author']; ?></td>
 
                                                     <td class="p-4 space-x-2 whitespace-nowrap">
                                                         <button type="button" data-modal-toggle="edit-user-modal"
@@ -239,7 +229,7 @@
                                                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
                                                                     clip-rule="evenodd"></path>
                                                             </svg>
-                                                            Edit user
+                                                            Edit
                                                         </button>
                                                         <button type="button" data-modal-toggle="delete-user-modal"
                                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center  bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
@@ -249,7 +239,7 @@
                                                                     d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                                     clip-rule="evenodd"></path>
                                                             </svg>
-                                                            Delete user
+                                                            Delete
                                                         </button>
                                                     </td>
                                                 </tr>

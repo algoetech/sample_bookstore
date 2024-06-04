@@ -1,6 +1,25 @@
 <?php include('../../lib/db.php'); ?>
 <?php include('../inc/header.php'); ?>
 
+
+<?php
+if (isset($_POST['save'])) {
+    $title = $conn->real_escape_string($_POST['title']);
+    $author = $conn->real_escape_string($_POST['author']);
+    $user = $_SESSION['user_id'];
+
+    $sql = "INSERT INTO requests (bookname, author, user) VALUES ('$title','$author', '$user')";
+
+    if ($conn->query($sql) === TRUE) {
+        $response = "<p>Request sent successfully!</p>";
+    } else {
+        $response = "<p>Error: " . $sql . "<br>" . $conn->error . "</p>";
+    }
+
+}
+
+?>
+
 <?php 
     
     $sql = "SELECT books.id AS book_id, books.title, books.publish_date, authors.id AS author_id, authors.name AS author_name,
@@ -267,74 +286,24 @@
                                             enctype="multipart/form-data">
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="first-name"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category
-                                                    Name</label>
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
                                                 <input type="text" name="title" id="name"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Molecular Physics" required="">
                                             </div>
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="first-name"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ISBN</label>
-                                                <input type="text" name="isbn" id="isbn"
-                                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="ISBN" required="">
-                                            </div>
-                                            <div class="col-span-6 sm:col-span-3">
-                                                <label for="first-name"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Publish
-                                                    Date</label>
-                                                <input type="date" name="date" id="isbn"
-                                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="ISBN" required="">
-                                            </div>
-                                            <div class="col-span-6 sm:col-span-3">
-                                                <label for="first-name"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Book
-                                                    file</label>
-                                                <input type="file" name="pdf" id="pdf"
-                                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="Science" required="">
-                                            </div>
-
-                                            <div class="col-span-6 sm:col-span-3">
-                                                <label for="first-name"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Author</label>
-                                                <select name="author" id="author"
+                                                <input type="text" name="author" id="isbn"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="Science" required="">
-                                                    <option value="">----</option>
-                                                    <?php 
-                                                    
-                                                    $authors = "SELECT * FROM authors";
-                                                    $res = $conn->query($authors);
-                                                    while($author = $res->fetch_assoc()){
-                                                    ?>
-                                                    <option value="<?php echo $author['id']; ?>">
-                                                        <?php echo $author['name']; ?></option>
-                                                    <?php } ?>
-                                                </select>
+                                                    placeholder="ISBN" required="">
                                             </div>
 
 
-                                            <div class="col-span-6 sm:col-span-3">
-                                                <label for="first-name"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                                                <select name="category" id="author"
-                                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="Science" required="">
-                                                    <option value="">----</option>
-                                                    <?php 
-                                                    
-                                                    $cates = "SELECT * FROM book_categories";
-                                                    $rez = $conn->query($cates);
-                                                    while($cate = $rez->fetch_assoc()){
-                                                    ?>
-                                                    <option value="<?php echo $cate['id']; ?>">
-                                                        <?php echo $cate['name']; ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
+
+
+
+
 
 
 
