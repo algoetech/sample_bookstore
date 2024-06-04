@@ -3,23 +3,23 @@
 # Book Store Inventory System Setup Script
 
 ## Description:
-### Book Store is a simple, yet effective, book inventory management system designed to help manage books in a bookstore.
-### It allows for easy tracking of book details, inventory status, and other relevant information.
-### This system leverages modern web technologies to provide a user-friendly and efficient solution for bookstore management.
+ Book Store is a simple, yet effective, book inventory management system designed to help manage books in a bookstore.
+ It allows for easy tracking of book details, inventory status, and other relevant information.
+ This system leverages modern web technologies to provide a user-friendly and efficient solution for bookstore management.
 
 ## Features:
-### - Book Management: Add, update, and delete book records.
-### - Inventory Tracking: Monitor the stock levels of books.
-### - Search Functionality: Easily search for books by title, author, or ISBN.
-### - User Interface: A clean and intuitive user interface using TailWindCSS and FlowBite components.
-### - Real-time Interactions: Dynamic interactions powered by AlpineJS.
+ - Book Management: Add, update, and delete book records.
+ - Inventory Tracking: Monitor the stock levels of books.
+ - Search Functionality: Easily search for books by title, author, or ISBN.
+ - User Interface: A clean and intuitive user interface using TailWindCSS and FlowBite components.
+ - Real-time Interactions: Dynamic interactions powered by AlpineJS.
 
 ## Requirements:
-### - PHP ^7.4
-### - MySQLi
-### - TailWindCSS ^3.0
-### - FlowBite
-### - AlpineJS
+ - PHP ^7.4
+ - MySQLi
+ - TailWindCSS ^3.0
+ - FlowBite
+ - AlpineJS
 
 ## Step 1: Clone the Repository
 
