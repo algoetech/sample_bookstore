@@ -11,7 +11,7 @@
         requests.author, 
         users.username as user
     FROM requests 
-    JOIN users ON requests.user = users.id where 1";
+    JOIN users ON requests.user = users.id where requests.granted='pending'";
 
     // Execute the query
     $result = $conn->query($sql);    
