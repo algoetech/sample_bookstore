@@ -1,22 +1,46 @@
-<?php include '../../lib/db.php'; ?>
-<?php include '../inc/header.php'; ?>
+<?php include('../../lib/db.php'); ?>
+<?php include('../inc/header.php'); ?>
 
-<?php if (isAdmin()) { ?>
+
+<?php
+
+if (isset($_POST['save'])) {
+    $uid = $_POST['uid'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $role = $_POST['role'];
+    $password = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+
+   try {
+        $insert = $conn->prepare("UPDATE users SET username='$name', email='$email', password='$password', role_id='$role' WHERE users.id='$uid';");
+        // $insert->bind_param('sssi', $name, $email, $password, $role);
+        $insert->execute();
+        $response = 'User updated successfully!';
+   } catch (\mysqli_sql_exception $e) {
+        $response = 'Error updating user: ' . $e->getMessage();
+    } catch (\Exception $e) {
+        $response = 'General error: ' . $e->getMessage();
+    }  
+}
+
+
+?>
+
+<?php if (isAdmin() && isset($_GET['uid'])) { ?>
 <?php 
-    
+    $edit = $_GET['uid'];
     $sql = "SELECT 
-        requests.id, 
-        requests.bookname, 
-        requests.granted,
-        requests.author, 
-        users.username as user
-    FROM requests 
-    JOIN users ON requests.user = users.id where 1";
+        users.id, 
+        users.username, 
+        users.email,
+        users.password, 
+        users.role_id, 
+        roles.name as role
+    FROM users 
+    JOIN roles ON users.role_id = roles.id where users.id='$edit';";
 
     // Execute the query
     $result = $conn->query($sql);    
-    
-    
     
     
 ?>
@@ -71,8 +95,7 @@
 
                                 </ol>
                             </nav>
-                            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Books Request
-                            </h1>
+                            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Users</h1>
                         </div>
                         <!-- Right Content -->
 
@@ -140,7 +163,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center ml-auto space-x-2 sm:space-x-3">
-                                <button type="button" id="toggleButton" data-model="Request"
+                                <button type="button" id="toggleButton" data-model="User"
                                     class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg hover:bg-gradient-to-tl hover:from-vendor-secondary-beta bg-gradient-cyan hover:via-vendor-secondary-alpha hover:to-vendor-tertiary-beta focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                     <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -148,7 +171,7 @@
                                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    Add Request
+                                    Add User
                                 </button>
 
                             </div>
@@ -175,102 +198,42 @@
                                 <div class="inline-block w-full align-middle">
                                     <div class="overflow-hidden shadow px-4">
 
+                                        <div>
 
-                                        <?php if ($result->num_rows > 0) { ?>
+                                            <?php if (isset($response)) {
 
+                                                ?>
+                                            <script>
+                                            Swal.fire({
+                                                title: "Success!",
+                                                icon: 'success',
+                                                text: "<?php echo $response; ?>"
+                                            });
+                                            </script>
+                                            <?php
+                                            // echo $response;
+                                            } ?>
 
-                                        <table id="list"
-                                            class="w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
-                                            <thead class="bg-gray-100 dark:bg-gray-700">
-                                                <th scope="col"
-                                                    class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                    #
-                                                </th>
+                                        </div>
 
-                                                <th scope="col"
-                                                    class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                    Book Name
-                                                </th>
-                                                <th scope="col"
-                                                    class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                    Grant
-                                                </th>
-                                                <th scope="col"
-                                                    class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                    Author
-                                                </th>
-
-                                                <th scope="col"
-                                                    class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                                    Actions
-                                                </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody
-                                                class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                                                <?php $count = 0; while ($row = $result->fetch_assoc()) { $count++;?>
-                                                <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                                    <td
-                                                        class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <?php echo $count; ?></td>
-
-                                                    <td
-                                                        class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <?php echo $row['bookname']; ?></td>
-                                                    <td
-                                                        class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <?php echo $row['granted']; ?></td>
-                                                    <td
-                                                        class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <?php echo $row['author']; ?></td>
-
-                                                    <td class="p-4 space-x-2 whitespace-nowrap">
-                                                        <button type="button" data-modal-toggle="edit-user-modal"
-                                                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center  rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                                            <svg class="w-4 h-4 mr-2" fill="currentColor"
-                                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                                                                </path>
-                                                                <path fill-rule="evenodd"
-                                                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                                    clip-rule="evenodd"></path>
-                                                            </svg>
-                                                            Edit
-                                                        </button>
-                                                        <button type="button" data-modal-toggle="delete-user-modal"
-                                                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center  bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
-                                                            <svg class="w-4 h-4 mr-2" fill="currentColor"
-                                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fill-rule="evenodd"
-                                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                                                    clip-rule="evenodd"></path>
-                                                            </svg>
-                                                            Delete
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                        <?php if ($result->num_rows > 0) { $user = $result->fetch_assoc(); ?>
 
 
-                                        <?php }else{echo "No Book added yet";} ?>
-
-                                        <form action="" class="add hidden" id="add" method="POST"
-                                            enctype="multipart/form-data">
+                                        <form action="" method="POST" enctype="multipart/form-data">
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="first-name"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User
                                                     Name</label>
-                                                <input type="text" name="title" id="name"
+                                                <input type="text" name="name" id="name"
+                                                    value="<?php echo $user['username'];?>"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="Joseph Thomas" required="">
+                                                    placeholder="Joseph Diud" required="">
                                             </div>
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="first-name"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">E-mail</label>
                                                 <input type="email" name="email" id="isbn"
+                                                    value="<?php echo $user['email'];?>"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="tairo@gmail.com" required="">
                                             </div>
@@ -289,7 +252,7 @@
                                             <div class="col-span-6 sm:col-span-3">
                                                 <label for="first-name"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                                                <select name="category" id="author"
+                                                <select name="role" id="author"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Science" required="">
                                                     <option value="">----</option>
@@ -299,7 +262,8 @@
                                                     $rez = $conn->query($cates);
                                                     while($cate = $rez->fetch_assoc()){
                                                     ?>
-                                                    <option value="<?php echo $cate['id']; ?>">
+                                                    <option value="<?php echo $cate['id']; ?>"
+                                                        <?php if($user['role_id'] == $cate['id']){echo "selected";}?>>
                                                         <?php echo $cate['name']; ?></option>
                                                     <?php } ?>
                                                 </select>
@@ -313,6 +277,11 @@
 
 
                                         </form>
+
+
+                                        <?php }else{echo "No User with this id";} ?>
+
+
                                     </div>
                                 </div>
                             </div>

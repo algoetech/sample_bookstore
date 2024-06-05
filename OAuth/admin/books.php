@@ -10,6 +10,7 @@
         $title = $conn->real_escape_string($_POST['title']);
         $isbn = $conn->real_escape_string($_POST['isbn']);
         $author_id = $conn->real_escape_string($_POST['author']);
+        $grant = $_POST['grant'] ?? null;
         $date = $_POST['date'];
         $category_id = $conn->real_escape_string($_POST['category']);
 
@@ -23,9 +24,14 @@
             if (move_uploaded_file($file_tmp, $file_path)) {
                 $pdf_path = $conn->real_escape_string($file_path);
 
-                $sql = "INSERT INTO books (title, isbn, file, publish_date, author_id, book_category_id) VALUES ('$title', '$isbn', '$pdf_path', '$date', '$author_id', '$category_id')";
+                $sql = "INSERT INTO books (title, isbn, file, publish_date, author_id, request_id, book_category_id) VALUES ('$title', '$isbn', '$pdf_path', '$date', '$author_id', '$grant', '$category_id')";
 
                 if ($conn->query($sql) === TRUE) {
+                    if ($grant != null) {
+                        $req = $conn->prepare("UPDATE requests SET granted='granted' WHERE id='$grant';");
+                        $req->execute();
+                    }
+                    
                     $response = "<p>Book added successfully!</p>";
                 } else {
                     $response = "<p>Error: " . $sql . "<br>" . $conn->error . "</p>";
@@ -213,7 +219,17 @@
                                         <div>
 
                                             <?php if (isset($response)) {
-                                                echo $response;
+
+                                            ?>
+                                            <script>
+                                            Swal.fire({
+                                                title: "Success!",
+                                                icon: 'success',
+                                                text: "<?php echo $response; ?>"
+                                            });
+                                            </script>
+                                            <?php
+                                            // echo $response;
                                             } ?>
 
                                         </div>
@@ -357,6 +373,26 @@
                                                     ?>
                                                     <option value="<?php echo $author['id']; ?>">
                                                         <?php echo $author['name']; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-span-6 sm:col-span-3">
+                                                <label for="first-name"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A
+                                                    grant for request</label>
+                                                <select name="grant" id="author"
+                                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                    placeholder="Science" required="">
+                                                    <option value="">----</option>
+                                                    <?php 
+                                                    
+                                                    $authors = "SELECT * FROM requests where granted='pending';";
+                                                    $res = $conn->query($authors);
+                                                    while($author = $res->fetch_assoc()){
+                                                    ?>
+                                                    <option value="<?php echo $author['id']; ?>">
+                                                        <?php echo $author['bookname']; ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>

@@ -68,8 +68,10 @@ define('DB_USERNAME', '$db_user');
 define('DB_PASSWORD', '$db_pass');
 define('DB_NAME', 'bookstore');
 EOL
+```
 
-# Step 5: Run the Application
+## Step 5: Run the Application
+```bash
 echo "Step 5: Running the application..."
 php -S localhost:8000
 ```
