@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2024 at 07:15 AM
+-- Generation Time: Jun 05, 2024 at 08:36 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -70,7 +70,9 @@ CREATE TABLE `books` (
 INSERT INTO `books` (`id`, `title`, `isbn`, `publish_date`, `summary`, `mockup`, `file`, `author_id`, `book_category_id`, `created_at`, `updated_at`) VALUES
 (1, 'Introduction to Molecular physics\r\n', '4RK2-3927-182H', '2024-02-05', 'A briefly introduction to physics..', NULL, 'physcs.png', 1, 1, NULL, NULL),
 (2, 'The Mystery Of Enoch', 'W537-983H-1982', NULL, NULL, NULL, '../../assets/images/uploads/invitation59.pdf', 1, 4, NULL, NULL),
-(3, 'Biochemistry', '8374-291H-37GW', '0000-00-00', NULL, NULL, '../../assets/images/uploads/invitation413.pdf', 1, 1, NULL, NULL);
+(3, 'Biochemistry', '8374-291H-37GW', '0000-00-00', NULL, NULL, '../../assets/images/uploads/invitation413.pdf', 1, 1, NULL, NULL),
+(4, 'Introduction to Chemistry', '25YE-47HH-9392', '0000-00-00', NULL, NULL, '../../assets/images/uploads/invitation107.pdf', 1, 1, NULL, NULL),
+(5, 'The tale of 11 Northern Knights', '2839-9348-7492', '2024-06-03', NULL, NULL, '../../assets/images/uploads/invitation413.pdf', 1, 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -94,6 +96,26 @@ INSERT INTO `book_categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (2, 'Stories', NULL, NULL),
 (3, 'Philosophy', NULL, NULL),
 (4, 'Religion', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requests`
+--
+
+CREATE TABLE `requests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `bookname` varchar(100) NOT NULL,
+  `author` varchar(100) NOT NULL,
+  `user` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `requests`
+--
+
+INSERT INTO `requests` (`id`, `bookname`, `author`, `user`) VALUES
+(1, 'Order Array', 'Aman Tairo', '4');
 
 -- --------------------------------------------------------
 
@@ -140,7 +162,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `email_verified_at`, `password`, `role_id`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'tairocruiz', 'admin@domain.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$YUYzdWNlOGdTNFhubThGWg$GTMOEY7ZQy0/N8EydTwhbQHMd9f5yPnrnw3vMS6jf1U', 1, NULL, NULL, NULL),
-(2, 'Aman Tairo', 'tairo@gmail.com', NULL, '234567890', 2, NULL, NULL, NULL);
+(2, 'Aman Tairo', 'tairo@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$YUYzdWNlOGdTNFhubThGWg$GTMOEY7ZQy0/N8EydTwhbQHMd9f5yPnrnw3vMS6jf1U', 2, NULL, NULL, NULL),
+(3, 'DEVID', 'tester@mail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$U052WFIzelB6elYuU0xUZA$saVXPgOKexwbygAqLnKs3Rv3mXjpHSqpPWfGkFkM3Kw', 2, NULL, NULL, NULL),
+(4, 'Joshua Gadi', 'joshua@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$SEdqMVkueDZuekIuSDlsTQ$RJvGPlSMR7DhUmx5Z9ziu4mjUC2ZvJPH9pYQ3TEnIo0', 2, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -166,6 +190,12 @@ ALTER TABLE `books`
 -- Indexes for table `book_categories`
 --
 ALTER TABLE `book_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `requests`
+--
+ALTER TABLE `requests`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -196,13 +226,19 @@ ALTER TABLE `authors`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `book_categories`
 --
 ALTER TABLE `book_categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `requests`
+--
+ALTER TABLE `requests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -214,7 +250,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
