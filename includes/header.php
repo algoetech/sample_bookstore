@@ -15,7 +15,7 @@
     <link rel="manifest" href="manifest.json">
     <style>
     .btn {
-        top: 2px;
+
         color: white;
         padding: 5px 18px;
         border-radius: 6px;
