@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2024 at 12:43 PM
+-- Generation Time: Jun 06, 2024 at 08:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `authors` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `bio` text DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
@@ -41,7 +41,8 @@ CREATE TABLE `authors` (
 --
 
 INSERT INTO `authors` (`id`, `user_id`, `name`, `bio`, `birth_date`, `death_date`) VALUES
-(1, 2, 'Aman Simon', 'Professor', '2024-06-03', NULL);
+(1, 2, 'Aman Simon', 'Professor', '2024-06-03', NULL),
+(10, NULL, 'Aman King III', 'The Professor ', '2024-05-27', NULL);
 
 -- --------------------------------------------------------
 
@@ -70,7 +71,9 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`id`, `title`, `request_id`, `isbn`, `publish_date`, `summary`, `mockup`, `file`, `author_id`, `book_category_id`, `created_at`, `updated_at`) VALUES
 (5, 'The tale of 11 Northern Knights', NULL, '2839-9348-7492', '2024-06-03', NULL, NULL, '../../assets/images/uploads/invitation413.pdf', 1, 2, NULL, NULL),
-(8, 'Bible', 3, '1192-383J-HY73', '2022-05-04', NULL, '../../assets/images/uploads/fly.jpg', '../../assets/images/uploads/invitation413.pdf', 1, 4, NULL, NULL);
+(8, 'Bible', 3, '1192-383J-HY73', '2022-05-04', NULL, '../../assets/images/uploads/fly.jpg', '../../assets/images/uploads/invitation413.pdf', 1, 4, NULL, NULL),
+(9, 'The Seven Sons', 4, '39H8-2782-JRYD', '2024-05-27', NULL, '../../assets/images/uploads/8dbe3d840a093960dbf8906d398bf973.jpg', '../../assets/images/uploads/invitation930_2.pdf', 1, 2, NULL, NULL),
+(10, 'The X86 Arch', 5, 'IDJ7-A87A-ASHS', '2024-05-27', NULL, '../../assets/images/uploads/yinyang.jpg', '../../assets/images/uploads/invitation_card_2.pdf', 10, 5, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -93,7 +96,8 @@ INSERT INTO `book_categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (1, 'Science', NULL, NULL),
 (2, 'Stories', NULL, NULL),
 (3, 'Philosophy', NULL, NULL),
-(4, 'Religion', NULL, NULL);
+(4, 'Religion', NULL, NULL),
+(5, 'Computer', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -116,7 +120,9 @@ CREATE TABLE `requests` (
 INSERT INTO `requests` (`id`, `bookname`, `author`, `granted`, `user`) VALUES
 (1, 'Order Array', 'Aman Tairo', 'granted', '4'),
 (2, 'Molecular Biology', 'Shedrack K. Shedrack', 'granted', '4'),
-(3, 'The Inigma Of Yang', 'Vacation Time', 'granted', '4');
+(3, 'The Inigma Of Yang', 'Vacation Time', 'granted', '4'),
+(4, 'The seven sons', 'Shedrack K. Shedrack', 'granted', '11'),
+(5, 'The X86 Architecture', 'Aman King III', 'granted', '10');
 
 -- --------------------------------------------------------
 
@@ -151,7 +157,7 @@ CREATE TABLE `users` (
   `email` varchar(60) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL DEFAULT 2,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -164,7 +170,12 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `email`, `email_verified_at`, `password`, `role_id`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'tairocruiz', 'admin@domain.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$YUYzdWNlOGdTNFhubThGWg$GTMOEY7ZQy0/N8EydTwhbQHMd9f5yPnrnw3vMS6jf1U', 1, NULL, NULL, NULL),
 (2, 'Aman Tairo', 'tairo@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$YUYzdWNlOGdTNFhubThGWg$GTMOEY7ZQy0/N8EydTwhbQHMd9f5yPnrnw3vMS6jf1U', 2, NULL, NULL, NULL),
-(4, 'Joshua Gadi', 'joshua@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$SEdqMVkueDZuekIuSDlsTQ$RJvGPlSMR7DhUmx5Z9ziu4mjUC2ZvJPH9pYQ3TEnIo0', 2, NULL, NULL, NULL);
+(4, 'Joshua Gadi', 'joshua@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$SEdqMVkueDZuekIuSDlsTQ$RJvGPlSMR7DhUmx5Z9ziu4mjUC2ZvJPH9pYQ3TEnIo0', 2, NULL, NULL, NULL),
+(9, 'PETER MBWAMBO KALISTI', 'mbwambopeter334@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$UzBaamsuekJEWUFtQW1Ccg$chUndAJ6yVopuLZv6CWywrVLKG5Weh/WWG5sVug0eR4', 2, NULL, NULL, NULL),
+(10, 'Joshua paul', 'joshuap@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$bldBbUo1QzN4SklWYzA4bQ$8UjZKuXHiQ6JLDWLn07USo5m6iVXFwS1kxfu7YULqBc', 2, NULL, NULL, NULL),
+(11, 'Gadi simon', 'gadi@mail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$SXhDd2pHOHFOQXdmeHJJRg$mD5bBZRoN+EMc/+NVumjA1k05EXl4FD4FjhcLi0kWzs', 2, NULL, NULL, NULL),
+(12, 'Hunman', 'hunman@gmail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$WFFQNkpXTkg0RGUyU3pwTw$3/oNfgMZg5Ks00ICPrlD3HsvN4bLgNhJMJYxNuZ7qrw', 2, NULL, NULL, NULL),
+(13, 'Issa Salim', 'issa@mail.com', NULL, '$argon2id$v=19$m=65536,t=4,p=1$b2FQdEliTlZRTHduQmdveg$VNbLVI02QzTjru4zyMqWWgp7XxmQZV/u3UH7JEKtupQ', 2, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -221,25 +232,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `book_categories`
 --
 ALTER TABLE `book_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -251,7 +262,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
