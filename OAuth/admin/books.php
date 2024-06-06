@@ -23,8 +23,25 @@
 
             if (move_uploaded_file($file_tmp, $file_path)) {
                 $pdf_path = $conn->real_escape_string($file_path);
+                // Check if an image is uploaded
+                $image_name = '';
+                if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                    $image_name = $_FILES['image']['name'];
+                    $image_tmp = $_FILES['image']['tmp_name'];
+                    $image_upload_dir = '../../assets/images/uploads/';
+                    $image_path = $image_upload_dir . basename($image_name);
 
-                $sql = "INSERT INTO books (title, isbn, file, publish_date, author_id, request_id, book_category_id) VALUES ('$title', '$isbn', '$pdf_path', '$date', '$author_id', '$grant', '$category_id')";
+                    // Move the image file to the upload directory
+                    if (move_uploaded_file($image_tmp, $image_path)) {
+                        $image_path = $conn->real_escape_string($image_path);
+                    } else {
+                        $image_path = NULL; // Set image path to NULL if no image uploaded
+                    }
+                } else {
+                    $image_path = NULL; // Set image path to NULL if no image uploaded
+                }
+
+                $sql = "INSERT INTO books (title, isbn, file, publish_date, author_id, mockup, request_id, book_category_id) VALUES ('$title', '$isbn', '$pdf_path', '$date', '$author_id', '$image_path', '$grant', '$category_id')";
 
                 if ($conn->query($sql) === TRUE) {
                     if ($grant != null) {
@@ -45,6 +62,14 @@
 
         // Close connection
         // $conn->close();
+    }
+
+    if(isset($_POST['delete'])){
+        $deleteId = $_POST['dbid'];
+    
+        $sql = $conn->prepare("DELETE FROM books WHERE books.id='$deleteId';");
+        $sql->execute();
+        $response = 'Book deleted successfully!';
     }
     
 ?>
@@ -306,7 +331,7 @@
                                                             Edit
                                                         </a>
                                                         <form action="" method="POST" id="deleteForm">
-                                                            <input type="hidden" name="duid" id="delete"
+                                                            <input type="hidden" name="dbid" id="delete"
                                                                 value="<?php echo $row['book_id']; ?>">
                                                             <button name="delete" type="submit" id="deletebtn"
                                                                 onclick="return confirm('Are you sure yo wanna delete this?')"
@@ -360,6 +385,14 @@
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Book
                                                     file</label>
                                                 <input type="file" name="pdf" id="pdf"
+                                                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                    placeholder="Science" required="">
+                                            </div>
+                                            <div class="col-span-6 sm:col-span-3">
+                                                <label for="first-name"
+                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Book
+                                                    Mockup</label>
+                                                <input type="file" name="image" id="pdf"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                     placeholder="Science" required="">
                                             </div>

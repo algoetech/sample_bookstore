@@ -5,7 +5,7 @@
 <?php
 
 if (isset($_POST['save'])) {
-    $name = $_POST['name'];
+    $name = $conn->real_escape_string($_POST['name']);
     $email = $_POST['email'];
     $role = $_POST['role'];
     $password = password_hash($_POST['password'], PASSWORD_ARGON2ID);

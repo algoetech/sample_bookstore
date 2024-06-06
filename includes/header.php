@@ -13,6 +13,25 @@
     <link rel="stylesheet" href="assets/quill-DIxs8W_A.css">
 
     <link rel="manifest" href="manifest.json">
+    <style>
+    .btn {
+        top: 2px;
+        color: white;
+        padding: 5px 18px;
+        border-radius: 6px;
+        background-color: brown;
+        margin: 20px auto;
+        width: 93%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        justify-self: center;
+    }
+
+    a .card-body {
+        min-height: 180px;
+    }
+    </style>
 
     <script src="assets/app-Da1fIks-.js"></script>
     <script src="assets/js/service.js"></script>

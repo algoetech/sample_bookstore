@@ -9,12 +9,20 @@ if (isset($_POST['save'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $role = $_POST['role'];
-    $password = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+    if (!is_null($_POST['password'])) {
+        $password = password_hash($_POST['password'], PASSWORD_ARGON2ID);
+    }
+   
 
    try {
-        $insert = $conn->prepare("UPDATE users SET username='$name', email='$email', password='$password', role_id='$role' WHERE users.id='$uid';");
-        // $insert->bind_param('sssi', $name, $email, $password, $role);
-        $insert->execute();
+        if (!is_null($_POST['password'])) {
+            $insert = $conn->prepare("UPDATE users SET username='$name', email='$email', password='$password', role_id='$role' WHERE users.id='$uid';");
+            $insert->execute();
+        }else{
+            $insert = $conn->prepare("UPDATE users SET username='$name', email='$email', role_id='$role' WHERE users.id='$uid';");
+            $insert->execute();
+        }
+       
         $response = 'User updated successfully!';
    } catch (\mysqli_sql_exception $e) {
         $response = 'Error updating user: ' . $e->getMessage();
@@ -243,7 +251,7 @@ if (isset($_POST['save'])) {
                                                 </label>
                                                 <input type="text" name="password" id="isbn"
                                                     class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                    placeholder="eg: XYZWYSNwj7278" required="">
+                                                    placeholder="eg: XYZWYSNwj7278">
                                             </div>
 
 

@@ -737,6 +737,10 @@
         cursor: default;
         user-select: none;
     }
+    w-25 {
+        width: min(100% - 2rem, 25%);
+        margin: auto;
+    }
 
     div:where(.swal2-icon) .swal2-icon-content {
         display: flex;
