@@ -140,7 +140,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center ml-auto space-x-2 sm:space-x-3">
-                                <button type="button" id="toggleButton" data-model="Request"
+                                <!-- <button type="button" id="toggleButton" data-model="Request"
                                     class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg hover:bg-gradient-to-tl hover:from-vendor-secondary-beta bg-gradient-cyan hover:via-vendor-secondary-alpha hover:to-vendor-tertiary-beta focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                     <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -149,7 +149,7 @@
                                             clip-rule="evenodd"></path>
                                     </svg>
                                     Add Request
-                                </button>
+                                </button> -->
 
                             </div>
                         </div>
@@ -225,7 +225,7 @@
                                                         <?php echo $row['author']; ?></td>
 
                                                     <td class="p-4 space-x-2 whitespace-nowrap">
-                                                        <button type="button" data-modal-toggle="edit-user-modal"
+                                                        <a href="books.php"
                                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center  rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                                             <svg class="w-4 h-4 mr-2" fill="currentColor"
                                                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -236,9 +236,9 @@
                                                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
                                                                     clip-rule="evenodd"></path>
                                                             </svg>
-                                                            Edit
-                                                        </button>
-                                                        <button type="button" data-modal-toggle="delete-user-modal"
+                                                            Grant
+                                                        </a>
+                                                        <!-- <button type="button" data-modal-toggle="delete-user-modal"
                                                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center  bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                                             <svg class="w-4 h-4 mr-2" fill="currentColor"
                                                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -247,7 +247,7 @@
                                                                     clip-rule="evenodd"></path>
                                                             </svg>
                                                             Delete
-                                                        </button>
+                                                        </button> -->
                                                     </td>
                                                 </tr>
                                                 <?php } ?>
@@ -255,7 +255,7 @@
                                         </table>
 
 
-                                        <?php }else{echo "No Book added yet";} ?>
+                                        <?php }else{echo "No Ungranted requests found yet";} ?>
 
                                         <form action="" class="add hidden" id="add" method="POST"
                                             enctype="multipart/form-data">
