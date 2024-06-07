@@ -11,6 +11,11 @@
                 });
             });
 
+            $('#toggleSidebarMobile').on('click', function (u) {
+                u.preventDefault();
+                
+            });
+
 
 
 

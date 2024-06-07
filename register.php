@@ -16,7 +16,6 @@ if (isset($_POST['register'])) {
             $stmt->bind_param("sss", $name, $email, $hash);
             
             
-            
             if ($stmt->execute()) {
                 $sql = "SELECT users.*, roles.id as rid, roles.name as role FROM users JOIN roles ON users.role_id = roles.id WHERE users.email = ?";
                 $stmt = $conn->prepare($sql);
@@ -51,14 +50,7 @@ if (isset($_POST['register'])) {
         $error_message = "An error occurred. Your password do not match.";
     }
         
-    // echo password_hash($_POST['password'], PASSWORD_ARGON2ID);
-
-
-    
-    
-    
-    
-    // $conn->close();
+   
 }
 
 ?>
@@ -119,7 +111,8 @@ if (isset($_POST['register'])) {
                 </div>
 
                 <button type="submit" name="register"
-                    class="text-white relative w-full hover:bg-gradient-to-tl hover:from-vendor-secondary-beta hover:via-vendor-secondary-alpha hover:to-vendor-tertiary-beta transition-none ease-soft-in-out hover:scale-[102%] bg-gradient-cyan my-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-5 py-2.5 text-center ">Register</button>
+                    class="text-white relative w-full hover:bg-gradient-to-tl hover:from-vendor-secondary-beta hover:via-vendor-secondary-alpha hover:to-vendor-tertiary-beta transition-none ease-soft-in-out hover:scale-[102%] bg-gradient-cyan my-4 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-5 py-2.5 text-center ">Register
+                    Now</button>
             </form>
 
         </div>
